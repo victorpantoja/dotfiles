@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# TODO: add bash_profile
+# TODO: add docker
+# TODO: add libxmlsec1-dev, pkg-config,  libz-dev, libldap2-dev, libsasl2-dev
+
 DOT_FILES_REPO=git@github.com:victorpantoja/dotfiles.git
 BASH_FILE=${HOME}/.bashrc
 PROJECT_HOME=${HOME}/projects
@@ -26,9 +30,11 @@ check_software() {
 }
 
 install_python() {
+#  TODO: change to curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     if ! check_software python; then
         install_debian python
         install_debian python-pip
+        install_debian python3-dev
     fi
 }
 
@@ -75,7 +81,7 @@ install_venv() {
 pre_run() {
     echo "Installing base libs"
     sudo apt-get update
-    sudo apt-get -y --allow-change-held-packages install vim htop curl dialog
+    sudo apt-get -y --allow-change-held-packages install vim htop curl python3-distutils dialog
 }
 
 #pre_run
@@ -116,6 +122,7 @@ do
 
                 git config --global user.email "victor.pantoja@gmail.com"
                 git config --global user.name "Victor Pantoja"
+                git config --global pull.rebase true
             fi
 
             if [ ! -e ${DOTFILES} ]; then
@@ -140,6 +147,7 @@ source'
             fi
 
             ln -s ${DOTFILES}/tmux.conf ${HOME}/.tmux.conf
+            ln -s ${DOTFILES}/tmux.conf.local ${HOME}/.tmux.conf.local
          ;;
 
          7)
